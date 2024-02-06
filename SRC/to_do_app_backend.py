@@ -19,7 +19,8 @@ def create_task_by_name_and_description(task_name: str, task_description: str) -
     """Creates a new task to be done."""
     global to_do_tasks
     if task_name in to_do_tasks:
-        raise None
+        raise mvc_exc.TaskByNameAlreadyExistsOnCreation(
+            "task {}, with description {} already exists".format(task_name, task_description))
     else:
         to_do_tasks[task_name] = task_description
 

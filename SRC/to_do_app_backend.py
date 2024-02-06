@@ -18,7 +18,10 @@ def create_tasks(new_tasks: ListOfTasks) -> None:
 def create_task_by_name_and_description(task_name: str, task_description: str) -> None:
     """Creates a new task to be done."""
     global to_do_tasks
-    to_do_tasks[task_name] = task_description
+    if task_name in to_do_tasks:
+        raise None
+    else:
+        to_do_tasks[task_name] = task_description
 
 
 def read_task_by_named_key(task_key_name: str):

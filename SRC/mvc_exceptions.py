@@ -11,5 +11,5 @@ class TaskUpdatedDoesNotExist(Exception):
     pass
 
 
-class TaskReadDoesNotExist(Exception):
+class TaskNameOnReadDoesNotExist(Exception):
     pass

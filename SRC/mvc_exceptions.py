@@ -1,4 +1,8 @@
 
+class TaskByNameAlreadyExistsOnCreation(Exception):
+    pass
+
+
 class TaskRemovedDoesNotExist(Exception):
     pass
 

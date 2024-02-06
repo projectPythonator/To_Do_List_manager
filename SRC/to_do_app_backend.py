@@ -6,7 +6,7 @@ TaskItem = Tuple[str, str]
 ToDoTasks = Dict[str, str] | None  # for now, we shall keep this basic like this
 ListOfTasks = Dict[str, str]
 
-to_do_tasks: ToDoTasks | None = None
+to_do_tasks: ToDoTasks | None = {}
 
 
 def create_tasks(new_tasks: ListOfTasks) -> None:
@@ -21,7 +21,7 @@ def create_task_by_name_and_description(task_name: str, task_description: str) -
     if task_name not in to_do_tasks:
         to_do_tasks[task_name] = task_description
     else:
-        raise mvc_exc.TaskByNameAlreadyExistsOnCreation(
+        raise mvc_exc.TaskNameOnCreationAlreadyExists(
             "task {}, with description {} already exists".format(task_name, task_description))
 
 

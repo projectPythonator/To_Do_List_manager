@@ -1,5 +1,5 @@
 
-class TaskByNameAlreadyExistsOnCreation(Exception):
+class TaskNameOnCreationAlreadyExists(Exception):
     pass
 
 

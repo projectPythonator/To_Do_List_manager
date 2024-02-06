@@ -3,7 +3,7 @@ class TaskByNameAlreadyExistsOnCreation(Exception):
     pass
 
 
-class TaskRemovedDoesNotExist(Exception):
+class TaskNameOnDeleteDoesNotExist(Exception):
     pass
 
 

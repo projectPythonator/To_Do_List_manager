@@ -50,3 +50,12 @@ def update_task_given_keyed_name(task_key_name: str, new_description: str) -> No
         raise mvc_exc.TaskNameOnUpdateDoesNotExist(
             "Task name {} and description {} was not found".format(task_key_name, new_description))
 
+
+def delete_task_given_keyed_name(task_key_name: str) -> None:
+    global to_do_tasks
+    if task_key_name in to_do_tasks:
+        to_do_tasks.pop(task_key_name)
+    else:
+        raise mvc_exc.TaskNameOnDeleteDoesNotExist(
+            "Task name {} not found when deletion attempted".format(task_key_name))
+

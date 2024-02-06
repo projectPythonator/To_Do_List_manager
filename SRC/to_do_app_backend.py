@@ -13,7 +13,7 @@ def create_tasks(new_tasks: ListOfTasks) -> None:
     to_do_tasks = new_tasks
 
 
-def create_task(task_name: str, task_description: str) -> None:
+def create_task_by_name_and_description(task_name: str, task_description: str) -> None:
     """Creates a new task to be done."""
     global to_do_tasks
     to_do_tasks[task_name] = task_description

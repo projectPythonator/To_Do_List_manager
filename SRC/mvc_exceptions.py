@@ -7,7 +7,7 @@ class TaskRemovedDoesNotExist(Exception):
     pass
 
 
-class TaskUpdatedDoesNotExist(Exception):
+class TaskNameOnUpdateDoesNotExist(Exception):
     pass
 
 

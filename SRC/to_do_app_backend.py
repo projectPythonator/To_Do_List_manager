@@ -39,3 +39,12 @@ def read_all_tasks() -> List[TaskItem]:
     """Grabs all tasks that currently exist."""
     global to_do_tasks
     return [(task_name, task_description) for task_name, task_description in to_do_tasks.items()]
+
+
+def update_task_given_keyed_name(task_key_name: str, new_description: str) -> None:
+    global to_do_tasks
+    if task_key_name in to_do_tasks:
+        to_do_tasks[task_key_name] = new_description
+    else:
+        raise mvc_exc.TaskNameOnUpdateDoesNotExist(
+            "Task name {} and description {} was not found".format(task_key_name, new_description))

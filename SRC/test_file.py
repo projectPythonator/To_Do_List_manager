@@ -7,12 +7,13 @@ class TestBackEnd(unittest.TestCase):
     def test_create_tasks(self):
         test_data = {"task_1": "test the back end", "hello task": "hello world"}
         backend_file.create_tasks(test_data)
+        self.assertEqual(backend_file.to_do_tasks, test_data)
 
     def test_create_task_by_name_and_description(self):
         test_task_name = "test_2"
         test_task_description = "testing this task now"
         backend_file.create_task_by_name_and_description(test_task_name, test_task_description)
-        self.assertEqual(test_task_name in backend_file.to_do_tasks, True)
+        self.assertTrue(test_task_name in backend_file.to_do_tasks)
         self.assertEqual(backend_file.to_do_tasks[test_task_name], test_task_description)
         self.assertEqual(len(backend_file.to_do_tasks), 1)
         self.assertRaises(mvc_exc.TaskNameOnCreationAlreadyExists,

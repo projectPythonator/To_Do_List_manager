@@ -1,4 +1,6 @@
+import mvc_exceptions as mvc_exc
 from typing import Dict, Tuple, List
+
 
 TaskItem = Tuple[str, str]
 ToDoTasks = Dict[str, str] | None  # for now, we shall keep this basic like this
@@ -20,10 +22,12 @@ def create_task_by_name_and_description(task_name: str, task_description: str) -
 
 
 def read_task_by_named_key(task_key_name: str):
+    """Grabs task by keyed name."""
     global to_do_tasks
     return to_do_tasks[task_key_name]
 
 
 def read_all_tasks() -> List[TaskItem]:
+    """Grabs all tasks that currently exist."""
     global to_do_tasks
     return [(task_name, task_description) for task_name, task_description in to_do_tasks.items()]

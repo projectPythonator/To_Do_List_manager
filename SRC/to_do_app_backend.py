@@ -1,65 +1,55 @@
-from sqlite3 import OperationalError, IntegrityError, ProgrammingError, connect
+from sqlite3 import OperationalError, IntegrityError, ProgrammingError
+import sqlite3
 import mvc_exceptions as mvc_exc
 
 
-data_base_name: str = ''
+DB_name = ''
 
 
 def scrub(input_string):
-    """Clean an input string (to prevent SQL injection).
-
-    Parameters
-    ----------
-    input_string : str
-
-    Returns
-    -------
-    str
-    """
+    """Clean an input string (to prevent SQL injection)."""
     return ''.join(k for k in input_string if k.isalnum())
 
 
-def connect_to_data_base(name_of_db=None):
-    global data_base_name
+def connect_to_db(db=None):
     """Connect to a db. creates db if there isn't one yet."""
-    if name_of_db is None:
-        data_base_name = 'local_data_base'
+    if db is None:
+        current_db = ':memory:'
         print("connected to local data base")
     else:
-        data_base_name = '{}.db'.format(name_of_db)
-        print("connected to {} data base.".format(data_base_name))
-    connection = connect(data_base_name)
+        current_db = '{}.db'.format(db)
+        print("connected to {} data base.".format(db))
+    connection = sqlite3.connect(current_db)
     return connection
 
 
-def connect_attempt(func):
+def connect(func):
     """Connect to a db. creates db if there isn't one yet."""
-
     def inner_func(conn, *args, **kwargs):
         try:
-            conn.execture('SELECT name FROM sqlite_temp_master WHERE type="table";')
+            conn.execute(
+                'SELECT name FROM sqlite_temp_master WHERE type="table";')
         except (AttributeError, ProgrammingError):
-            conn = connect_to_data_base(data_base_name)
+            conn = connect_to_db(DB_name)
         return func(conn, *args, **kwargs)
-
     return inner_func
 
 
-def disconnect_from_db(db_name=None, conn=None):
-    if db_name is not data_base_name:
-        print("trying to disconnect from the wrong db!!")
+def disconnect_from_db(db=None, conn=None):
+    if db is not DB_name:
+        print("You are trying to disconnect from a wrong DB")
     if conn is not None:
         conn.close()
 
 
 @connect
-def create_table(conn, name_of_user):
-    name_of_user = scrub(name_of_user)
-    sql_cmd = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
-               'name TEXT UNIQUE, '
-               'description TEXT)').format(name_of_user)
+def create_table(conn, table_name):
+    name_of_user = scrub(table_name)
+    sql = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
+           'name TEXT UNIQUE, '
+           'description TEXT UNIQUE)').format(table_name)
     try:
-        conn.execute(sql_cmd)
+        conn.execute(sql)
     except OperationalError as e:
         print(e)
 
@@ -143,3 +133,17 @@ def delete_one(conn, task_name, user_name):
         mvc_exc.UserNameOnDeleteDoesNotExist(
             "cant delete '{}' because it does not exist for user {}".format(task_name, user_name))
 
+
+def main():
+    table_name = 'agis'
+    conn = connect_to_db()  # in-memory database
+    # conn = connect_to_db(DB_name)  # physical database (i.e. a .db file)
+
+    create_table(conn, table_name)
+
+
+
+
+
+if __name__ == "__main__":
+    main()

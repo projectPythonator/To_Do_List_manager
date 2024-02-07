@@ -155,15 +155,15 @@ class Controller(object):
         self.task_info_text_field.delete(0, END)
 
     def delete_task(self):
-        content: str = self.task_name_text_field.get()
-        if len(content) == 0:
+        task_name: str = self.task_name_text_field.get()
+        if len(task_name) == 0:
             messagebox.showerror("task name error", message="task name must not be blank")
             return
         if len(self.model.read_tasks()) == 0:
             messagebox.showerror("No task", message="task list was empty")
             return
         self.task_name_text_field.delete(0, END)
-        self.model.delete_task(content)
+        self.model.delete_task(task_name)
         self.view.update_tasks_window(self.task_info_text_area,
                                       self.model.read_tasks())
 

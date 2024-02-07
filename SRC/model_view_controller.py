@@ -103,7 +103,7 @@ class Controller(object):
         gui.mainloop()
 
     def input_error(self):
-        if self.task_info_text_field.get() == '' or self.task_name_text_field == '':
+        if self.task_info_text_field.get() == '' or self.task_name_text_field.get() == '':
             messagebox.showerror("Empty error",
                                  message="task name and description can not be blank")
             return True

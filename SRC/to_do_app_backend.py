@@ -11,15 +11,15 @@ def scrub(input_string: str) -> str:
     return ''.join(k for k in input_string if k.isalnum())
 
 
-def connect_to_db(db=None):
+def connect_to_db(new_data_base=None):
     """Connect to a db. creates db if there isn't one yet."""
     global DB_name
-    if db is None:
+    if new_data_base is None:
         DB_name = ':memory:'
         print("connected to local data base")
     else:
-        DB_name = '{}.db'.format(db)
-        print("connected to {} data base.".format(db))
+        DB_name = '{}.db'.format(new_data_base)
+        print("connected to {} data base.".format(new_data_base))
     connection = sqlite3.connect(DB_name)
     return connection
 

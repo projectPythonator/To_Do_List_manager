@@ -69,12 +69,11 @@ def insert_one(conn, task_name: str, task_description: str, user_name: str):
 
 
 @connect
-def select_all(conn, user_name):
+def select_all(conn, user_name: str):
     user_name = scrub(user_name)
     sql_command = "SELECT * FROM {}".format(user_name)
     connect_obj = conn.execute(sql_command)
-    result = connect_obj.fetchall()
-    return result
+    return connect_obj.fetchall()
 
 
 @connect

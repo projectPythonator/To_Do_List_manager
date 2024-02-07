@@ -111,6 +111,15 @@ def read_task(conn, task_name, user_name):
             "cant read '{}' because it does not exist for user {}".format(task_name, user_name))
 
 
+@connect
+def read_tasks(conn, user_name):
+    user_name = scrub(user_name)
+    sql_command = "SELECT * FROM {}".format(user_name)
+    connect_obj = conn.execute(sql_command)
+    result = connect_obj.fetchall()
+    return result
+
+
 
 
 

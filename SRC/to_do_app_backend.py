@@ -53,7 +53,7 @@ def disconnect_from_db(db_name=None, conn=None):
 
 
 @connect
-def create_table(conn, name_of_user: str):
+def create_table(conn, name_of_user):
     name_of_user = scrub(name_of_user)
     sql_cmd = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
                'name TEXT UNIQUE, '

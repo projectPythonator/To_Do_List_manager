@@ -5,9 +5,8 @@ from typing import Dict, Tuple, List
 TaskItem = Tuple[str, str]
 ToDoTasks = Dict[str, str] | None  # for now, we shall keep this basic like this
 ListOfTasks = Dict[str, str]
-
 to_do_tasks: ToDoTasks | None = {}
-
+users: Dict[str, to_do_tasks] | None = {}
 
 def create_tasks(new_tasks: ListOfTasks) -> None:
     """Sets the current list of task to a new list of tasks."""
@@ -59,3 +58,13 @@ def delete_task_given_keyed_name(task_key_name: str) -> None:
     else:
         raise mvc_exc.TaskNameOnDeleteDoesNotExist(
             "Task name {} not found when deletion attempted".format(task_key_name))
+
+
+def create_new_user(self, user_name):
+    global users
+    if user_name not in users:
+        users[user_name] = {}
+    else:
+        raise mvc_exc.UserNameOnCreationAlreadyExists(
+            "User name {} already exists during creation".format(user_name))
+

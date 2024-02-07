@@ -89,18 +89,3 @@ def delete_one(conn, task_name: str, user_name: str):
     else:
         mvc_exc.UserNameOnDeleteDoesNotExist(
             "cant delete '{}' because it does not exist for user {}".format(task_name, user_name))
-
-
-def main():
-    table_name = 'agis'
-    conn = connect_to_db()  # in-memory database
-    # conn = connect_to_db(DB_name)  # physical database (i.e. a .db file)
-
-    create_table(conn, table_name)
-
-
-
-
-
-if __name__ == "__main__":
-    main()

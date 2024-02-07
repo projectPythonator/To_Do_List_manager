@@ -24,9 +24,6 @@ class Model(object):
     def create_task(self, name, description):
         backend_file.insert_one(self.connection, name, description, user_name=self.user_name)
 
-    def create_tasks(self, tasks):
-        backend_file.insert_many(self.connection, tasks, user_name=self.user_name)
-
     def read_task(self, task):
         return backend_file.select_one(self.connection, task, user_name=self.user_name)
 
@@ -154,12 +151,13 @@ class Controller(object):
         self.task_name_text_field.delete(0, END)
 
     def update_task(self):
-        name = self.task_update_text_field.get()
-        content = self.task_num_text_field.get()
+        content = self.task_update_text_field.get()
+        name = self.task_num_text_field.get()
         if len(content) == 0 or len(name) == 0:
             messagebox.showerror("empty key")
             return
-        self.model.update_task(name, content)
+        self.model.delete_task(name)
+        self.model.create_task(name, content)
         self.view.update_tasks_window(self.task_info_text_area,
                                       self.model.read_tasks())
         self.task_update_text_field.delete(0, END)

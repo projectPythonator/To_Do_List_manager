@@ -5,8 +5,8 @@ import to_do_app_backend as backend_file
 
 class Model(object):
     def __init__(self, name: str):
-        self._user_name = name
-        self._connection = backend_file.connect_to_db(name)
+        self._user_name: str = name
+        self._connection: str = backend_file.connect_to_db(name)
         backend_file.create_table(self._connection, self._user_name)
 
     @property
@@ -24,14 +24,8 @@ class Model(object):
     def create_task(self, name, description):
         backend_file.insert_one(self.connection, name, description, user_name=self.user_name)
 
-    def read_task(self, task):
-        return backend_file.select_one(self.connection, task, user_name=self.user_name)
-
     def read_tasks(self):
         return backend_file.select_all(self.connection, user_name=self.user_name)
-
-    def update_task(self, name, description):
-        backend_file.update_one(self.connection, name, description, user_name=self.user_name)
 
     def delete_task(self, task):
         backend_file.delete_one(self.connection, task, user_name=self.user_name)
@@ -39,15 +33,15 @@ class Model(object):
 
 class View(object):
 
-    def update_tasks_window(self, obj, tasks):
+    def update_tasks_window(self, obj, list_of_tasks):
+        """Method clears tasks then writes the new updated tasks to window. Can be optimized."""
         obj.delete(1.0, END)
-        for key, num, task in tasks:
-            obj.insert('end -1 chars', "[{}] {}\n".format(num, task))
+        for key, num, task in list_of_tasks:
+            obj.insert('end -1 chars', "task name: '{}' task description {}\n".format(num, task))
 
 
 class Controller(object):
     def __init__(self, mod, viw):
-        self.counter = 0
         self.model: Model = mod
         self.view: View = viw
         gui = Tk()
@@ -164,13 +158,12 @@ class Controller(object):
         self.task_num_text_field.delete(0, END)
 
     def delete_task(self):
-        tasks = self.model.read_tasks()
-        if len(tasks) == 0:
-            messagebox.showerror("No task")
-            return
-        content = self.task_num_text_field.get()
+        content: str = self.task_num_text_field.get()
         if len(content) == 0:
-            messagebox.showerror("empty key")
+            messagebox.showerror("didn't enter a task name")
+            return
+        if len(self.model.read_tasks()) == 0:
+            messagebox.showerror("No task")
             return
         self.task_num_text_field.delete(0, END)
         self.model.delete_task(content)

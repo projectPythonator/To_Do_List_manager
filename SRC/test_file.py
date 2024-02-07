@@ -10,7 +10,16 @@ class TestBackEnd(unittest.TestCase):
         expected = 'QWERTY123456'
         self.assertEqual(backend_file.scrub(test_str), expected)
 
+    def test_connect_to_db(self):
+        expected_local = ':memory:'
+        expected_named = 'agis.db'
+        backend_file.connect_to_db()
+        self.assertEqual(backend_file.DB_name, expected_local)
+        backend_file.connect_to_db('agis')
+        self.assertEqual(backend_file.DB_name, expected_named)
 
+    def test_create_table(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main()

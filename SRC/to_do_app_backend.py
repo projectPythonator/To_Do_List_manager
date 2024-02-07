@@ -13,13 +13,14 @@ def scrub(input_string):
 
 def connect_to_db(db=None):
     """Connect to a db. creates db if there isn't one yet."""
+    global DB_name
     if db is None:
-        current_db = ':memory:'
+        DB_name = ':memory:'
         print("connected to local data base")
     else:
-        current_db = '{}.db'.format(db)
+        DB_name = '{}.db'.format(db)
         print("connected to {} data base.".format(db))
-    connection = sqlite3.connect(current_db)
+    connection = sqlite3.connect(DB_name)
     return connection
 
 
@@ -44,7 +45,7 @@ def disconnect_from_db(db=None, conn=None):
 
 @connect
 def create_table(conn, table_name):
-    name_of_user = scrub(table_name)
+    table_name = scrub(table_name)
     sql = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
            'name TEXT UNIQUE, '
            'description TEXT UNIQUE)').format(table_name)
@@ -120,8 +121,9 @@ def update_one(conn, task_name, task_description, user_name):
 
 @connect
 def delete_one(conn, task_name, user_name):
+    print(type(task_name))
     user_name = scrub(user_name)
-    sql_check_command = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1'.format(user_name)
+    sql_check_command = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1)'.format(user_name)
     user_name = scrub(user_name)
     sql_delete_command = 'DELETE FROM {} WHERE name=?'.format(user_name)
     connect_obj = conn.execute(sql_check_command, (task_name,))

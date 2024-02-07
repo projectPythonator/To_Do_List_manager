@@ -7,6 +7,15 @@ class Model(object):
         backend_file.create_tasks(user_info)  # load up the info for a user
         pass
 
+    def load_user(self, user_key):
+        backend_file.load_user_by_user_name(user_key)
+
+    def add_new_user(self, user_key):
+        backend_file.create_user_by_user_name(user_key)
+
+    def delete_user(self, user_key):
+        backend_file.delete_user_by_user_name(user_key)
+
     def create_task(self, task_key_name, task_description):
         backend_file.create_task_by_name_and_description(task_key_name, task_description)
 

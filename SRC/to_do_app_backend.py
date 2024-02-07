@@ -1,13 +1,6 @@
 from sqlite3 import OperationalError, IntegrityError, ProgrammingError, connect
 import mvc_exceptions as mvc_exc
-from typing import Dict, Tuple, List
 
-TaskItem = Tuple[str, str]
-ToDoTasks = Dict[str, str] | None  # for now, we shall keep this basic like this
-ListOfTasks = Dict[str, str]
-to_do_tasks: ToDoTasks | None = {}
-users: Dict[str, Tuple[str, str]] | None = {}
-current_user: str = ''
 
 data_base_name: str = ''
 
@@ -19,7 +12,7 @@ def connect_to_data_base(name_of_db=None):
         data_base_name = 'local_data_base'
         print("connected to local data base")
     else:
-        data_base_name = name_of_db
+        data_base_name = '{}.db'.format(name_of_db)
         print("connected to {} data base.".format(data_base_name))
     connection = connect(data_base_name)
     return connection
@@ -46,7 +39,7 @@ def disconnect_from_db(db_name=None, conn=None):
 
 
 @connect
-def create_table(conn, name_of_user):
+def create_table(conn, name_of_user: str):
     name_of_user = scrub(name_of_user)
     sql_cmd = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
                'name TEXT UNIQUE, '

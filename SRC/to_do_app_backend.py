@@ -1,3 +1,5 @@
+import sqlite3
+
 import mvc_exceptions as mvc_exc
 from typing import Dict, Tuple, List
 
@@ -9,7 +11,20 @@ to_do_tasks: ToDoTasks | None = {}
 users: Dict[str, Tuple[str, str]] | None = {}
 current_user: str = ''
 
-data_base_name = ''
+data_base_name: str = ''
+
+
+def connect_to_data_base(name_of_db=None):
+    global data_base_name
+    """Connect to a db. creates db if there isn't one yet."""
+    if name_of_db is None:
+        data_base_name = 'local_data_base'
+        print("connected to local data base")
+    else:
+        data_base_name = name_of_db
+        print("connected to {} data base.".format(data_base_name))
+    connection = sqlite3.connect(data_base_name)
+    return connection
 
 def create_tasks(new_tasks: ListOfTasks) -> None:
     """Sets the current list of task to a new list of tasks."""

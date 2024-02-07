@@ -60,11 +60,20 @@ def delete_task_given_keyed_name(task_key_name: str) -> None:
             "Task name {} not found when deletion attempted".format(task_key_name))
 
 
-def create_new_user(self, user_name):
+def create_user_by_user_name(self, user_name: str) -> None:
     global users
     if user_name not in users:
         users[user_name] = {}
     else:
         raise mvc_exc.UserNameOnCreationAlreadyExists(
             "User name {} already exists during creation".format(user_name))
+
+
+def delete_user_by_user_name(self, user_name: str) -> None:
+    global users
+    if user_name in users:
+        del users[user_name]
+    else:
+        raise mvc_exc.UserNameOnDeleteDoesNotExist(
+            "User name {} does not exist during deletion".format(user_name))
 

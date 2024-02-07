@@ -6,9 +6,10 @@ TaskItem = Tuple[str, str]
 ToDoTasks = Dict[str, str] | None  # for now, we shall keep this basic like this
 ListOfTasks = Dict[str, str]
 to_do_tasks: ToDoTasks | None = {}
-users: Dict[str, to_do_tasks] | None = {}
+users: Dict[str, Tuple[str, str]] | None = {}
 current_user: str = ''
 
+data_base_name = ''
 
 def create_tasks(new_tasks: ListOfTasks) -> None:
     """Sets the current list of task to a new list of tasks."""

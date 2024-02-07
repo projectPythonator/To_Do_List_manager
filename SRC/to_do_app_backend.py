@@ -89,4 +89,3 @@ def delete_one(conn, task_name: str, user_name: str):
     else:
         mvc_exc.UserNameOnDeleteDoesNotExist(
             "cant delete '{}' because it does not exist for user {}".format(task_name, user_name))
-

@@ -97,6 +97,18 @@ def insert_tasks(conn, tasks, user_name):
                                                                               user_name))
 
 
+@connect
+def read_task(conn, task_name, user_name):
+    user_name = scrub(user_name)
+    task_name = scrub(task_name)
+    sql_command = "SELECT * FROM {} WHERE name='{}'".format(user_name, task_name)
+    connect_obj = conn.execute(sql_command)
+    result = connect_obj.fetchone()
+    if result is not None:
+        return result
+    else:
+        mvc_exc.TaskNameOnReadDoesNotExist(
+            "cant read '{}' because it does not exist for user {}".format(task_name, user_name))
 
 
 

@@ -21,3 +21,7 @@ class UserNameOnLoadDoesNotExist(Exception):
 
 class UserNameOnCreationAlreadyExists(Exception):
     pass
+
+
+class UserNameOnDeleteDoesNotExist(Exception):
+    pass

@@ -18,8 +18,6 @@ class TestBackEnd(unittest.TestCase):
         backend_file.connect_to_db('agis')
         self.assertEqual(backend_file.DB_name, expected_named)
 
-    def test_create_table(self):
-        pass
 
 if __name__ == "__main__":
     unittest.main()

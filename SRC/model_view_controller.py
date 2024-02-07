@@ -4,9 +4,9 @@ import to_do_app_backend as backend_file
 
 
 class Model(object):
-    def __init__(self, name: str):
-        self._user_name: str = name
-        self._connection: str = backend_file.connect_to_db(name)
+    def __init__(self, user_name: str):
+        self._user_name: str = user_name
+        self._connection: str = backend_file.connect_to_db(user_name)
         backend_file.create_table(self._connection, self._user_name)
 
     @property
@@ -18,17 +18,18 @@ class Model(object):
         return self._user_name
 
     @user_name.setter
-    def user_name(self, new_user):
+    def user_name(self, new_user: str):
         self._user_name = new_user
 
-    def create_task(self, name, description):
-        backend_file.insert_one(self.connection, name, description, user_name=self.user_name)
+    def create_task(self, task_name: str, task_description: str):
+        backend_file.insert_one(self.connection, task_name, task_description,
+                                user_name=self.user_name)
 
     def read_tasks(self):
         return backend_file.select_all(self.connection, user_name=self.user_name)
 
-    def delete_task(self, task):
-        backend_file.delete_one(self.connection, task, user_name=self.user_name)
+    def delete_task(self, task_name: str):
+        backend_file.delete_one(self.connection, task_name, user_name=self.user_name)
 
 
 class View(object):

@@ -1,5 +1,4 @@
-import sqlite3
-
+from sqlite3 import OperationalError, IntegrityError, ProgrammingError, connect
 import mvc_exceptions as mvc_exc
 from typing import Dict, Tuple, List
 
@@ -23,8 +22,27 @@ def connect_to_data_base(name_of_db=None):
     else:
         data_base_name = name_of_db
         print("connected to {} data base.".format(data_base_name))
-    connection = sqlite3.connect(data_base_name)
+    connection = connect(data_base_name)
     return connection
+
+
+def connect_attempt(func):
+    """Connect to a db. creates db if there isn't one yet."""
+    def inner_func(conn, *args, **kwargs):
+        try:
+            conn.execture('SELECT name FROM sqlite_temp_master WHERE type="table";')
+        except (AttributeError, ProgrammingError):
+            conn = connect_to_data_base(data_base_name)
+        return func(conn, *args, **kwargs)
+    return inner_func
+
+
+def disconnect_from_db(db_name=None, conn=None):
+    if db_name is not data_base_name:
+        print("trying to disconnect from the wrong db!!")
+    if conn is not None:
+        conn.close()
+
 
 def create_tasks(new_tasks: ListOfTasks) -> None:
     """Sets the current list of task to a new list of tasks."""

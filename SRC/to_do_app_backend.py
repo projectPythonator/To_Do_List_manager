@@ -77,7 +77,7 @@ def select_all(conn, user_name: str):
 
 
 @connect
-def delete_one(conn, task_name, user_name):
+def delete_one(conn, task_name: str, user_name: str):
     user_name = scrub(user_name)
     sql_check_command = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1)'.format(user_name)
     sql_delete_command = 'DELETE FROM {} WHERE name=?'.format(user_name)

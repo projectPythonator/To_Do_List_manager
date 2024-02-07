@@ -181,6 +181,6 @@ class Controller(object):
 
 
 if __name__ == '__main__':
-    model = Model('Agis')
+    model = Model('to_do_data_base')
     view = View()
     Controller(model, view)

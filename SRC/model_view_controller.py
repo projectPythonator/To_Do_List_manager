@@ -41,15 +41,20 @@ class View(object):
 
 
 class Controller(object):
-    def __init__(self, mod, viw):
+    def __init__(self, mod: Model, viw: View):
         self.model: Model = mod
         self.view: View = viw
+        user_name_prompt_string = 'enter user name here'
+        task_name_prompt_string = 'enter task name here'
+        task_description_prompt_string = 'enter task description here'
+        task_name_update_string = 'enter task name to update or delete here'
+        task_description_update_string = 'enter new task description here'
         gui = Tk()
         gui.configure(background="light green")
         gui.title("to do app")
         gui.geometry("640x400")
 
-        self.user_name_prompt_label = Label(gui, text='enter user name here',
+        self.user_name_prompt_label = Label(gui, text=user_name_prompt_string,
                                             background="light green")
         self.user_name_text_field = Entry(gui)
 
@@ -60,16 +65,17 @@ class Controller(object):
         self.delete_user_btn = Button(gui, text="Delete User", fg="Black", bg="Red",
                                       command=self.delete_user)
 
-        self.task_info_prompt_label = Label(gui, text='enter task to add here',
+        self.task_info_prompt_label = Label(gui, text=task_description_prompt_string,
                                             background="light green")
         self.task_info_text_field = Entry(gui)
-        self.task_name_prompt_label = Label(gui, text='enter task name', background="light green")
+        self.task_name_prompt_label = Label(gui, text=task_name_prompt_string,
+                                            background="light green")
         self.task_name_text_field = Entry(gui)
         self.task_info_text_area = Text(gui, height=20, width=50)
 
-        self.task_num_prompt_label = Label(gui, text='enter task number here to delete or update',
+        self.task_num_prompt_label = Label(gui, text=task_name_update_string,
                                            background="light green")
-        self.task_update_prompt_label = Label(gui, text='enter updated content here',
+        self.task_update_prompt_label = Label(gui, text=task_description_update_string,
                                               background="light green")
         self.task_num_text_field = Entry(gui)
         self.task_update_text_field = Entry(gui)
@@ -110,14 +116,15 @@ class Controller(object):
 
     def input_error(self):
         if self.task_info_text_field.get() == '' or self.task_name_text_field == '':
-            messagebox.showerror("Empty error")
+            messagebox.showerror("Empty error",
+                                 message="task name and description can not be blank")
             return True
         return False
 
     def load_user(self):
         user_name = self.user_name_text_field.get()
         if len(user_name) == 0:
-            messagebox.showerror("empty user name")
+            messagebox.showerror("empty user name", message="user name field must not be blank")
             return
         self.model = Model(user_name)
         self.view.update_tasks_window(self.task_info_text_area, self.model.read_tasks())
@@ -125,7 +132,7 @@ class Controller(object):
     def add_user(self):
         user_name = self.user_name_text_field.get()
         if len(user_name) == 0:
-            messagebox.showerror("empty user name")
+            messagebox.showerror("empty user name", message="user name field must not be blank")
             return
         self.model = Model(user_name)
         self.view.update_tasks_window(self.task_info_text_area, self.model.read_tasks())
@@ -136,22 +143,23 @@ class Controller(object):
     def add_task(self):
         if self.input_error():
             return
-        name = self.task_name_text_field.get()
-        content = self.task_info_text_field.get()
-        self.model.create_task(name, content)
+        task_name = self.task_name_text_field.get()
+        task_description = self.task_info_text_field.get()
+        self.model.create_task(task_name, task_description)
         self.view.update_tasks_window(self.task_info_text_area,
                                       self.model.read_tasks())
         self.task_info_text_field.delete(0, END)
         self.task_name_text_field.delete(0, END)
 
     def update_task(self):
-        content = self.task_update_text_field.get()
-        name = self.task_num_text_field.get()
-        if len(content) == 0 or len(name) == 0:
-            messagebox.showerror("empty key")
+        task_description: str = self.task_update_text_field.get()
+        task_name = self.task_num_text_field.get()
+        if len(task_description) == 0 or len(task_name) == 0:
+            messagebox.showerror("empty text box",
+                                 message="both task name and description must not be blank")
             return
-        self.model.delete_task(name)
-        self.model.create_task(name, content)
+        self.model.delete_task(task_name)
+        self.model.create_task(task_name, task_description)
         self.view.update_tasks_window(self.task_info_text_area,
                                       self.model.read_tasks())
         self.task_update_text_field.delete(0, END)
@@ -160,10 +168,10 @@ class Controller(object):
     def delete_task(self):
         content: str = self.task_num_text_field.get()
         if len(content) == 0:
-            messagebox.showerror("didn't enter a task name")
+            messagebox.showerror("task name error", message="task name must not be blank")
             return
         if len(self.model.read_tasks()) == 0:
-            messagebox.showerror("No task")
+            messagebox.showerror("No task", message="task list was empty")
             return
         self.task_num_text_field.delete(0, END)
         self.model.delete_task(content)

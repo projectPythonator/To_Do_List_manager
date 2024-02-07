@@ -13,3 +13,11 @@ class TaskNameOnUpdateDoesNotExist(Exception):
 
 class TaskNameOnReadDoesNotExist(Exception):
     pass
+
+
+class UserNameOnLoadDoesNotExist(Exception):
+    pass
+
+
+class UserNameOnCreationAlreadyExists(Exception):
+    pass

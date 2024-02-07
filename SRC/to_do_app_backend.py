@@ -5,6 +5,20 @@ import mvc_exceptions as mvc_exc
 data_base_name: str = ''
 
 
+def scrub(input_string):
+    """Clean an input string (to prevent SQL injection).
+
+    Parameters
+    ----------
+    input_string : str
+
+    Returns
+    -------
+    str
+    """
+    return ''.join(k for k in input_string if k.isalnum())
+
+
 def connect_to_data_base(name_of_db=None):
     global data_base_name
     """Connect to a db. creates db if there isn't one yet."""
@@ -50,22 +64,8 @@ def create_table(conn, name_of_user: str):
         print(e)
 
 
-def scrub(input_string):
-    """Clean an input string (to prevent SQL injection).
-
-    Parameters
-    ----------
-    input_string : str
-
-    Returns
-    -------
-    str
-    """
-    return ''.join(k for k in input_string if k.isalnum())
-
-
 @connect
-def insert_task(conn, task_name: str, task_description: str, user_name):
+def insert_one(conn, task_name, task_description, user_name):
     user_name = scrub(user_name)
     sql_command = "INSERT INTO {} ('name', 'description') VALUES (?, ?)".format(user_name)
     try:
@@ -77,7 +77,7 @@ def insert_task(conn, task_name: str, task_description: str, user_name):
 
 
 @connect
-def insert_tasks(conn, tasks, user_name):
+def insert_many(conn, tasks, user_name):
     user_name = scrub(user_name)
     sql_command = "INSERT INTO {} ('name', 'description') VALUES (?, ?)".format(user_name)
     entries = [(task, description) for task, description in tasks]
@@ -91,7 +91,7 @@ def insert_tasks(conn, tasks, user_name):
 
 
 @connect
-def read_task(conn, task_name, user_name):
+def select_one(conn, task_name, user_name):
     user_name = scrub(user_name)
     task_name = scrub(task_name)
     sql_command = "SELECT * FROM {} WHERE name='{}'".format(user_name, task_name)
@@ -105,7 +105,7 @@ def read_task(conn, task_name, user_name):
 
 
 @connect
-def read_tasks(conn, user_name):
+def select_all(conn, user_name):
     user_name = scrub(user_name)
     sql_command = "SELECT * FROM {}".format(user_name)
     connect_obj = conn.execute(sql_command)
@@ -114,7 +114,7 @@ def read_tasks(conn, user_name):
 
 
 @connect
-def update_task(conn, task_name, task_description, user_name):
+def update_one(conn, task_name, task_description, user_name):
     user_name = scrub(user_name)
     sql_check_command = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1'.format(user_name)
     sql_update_command = 'UPDATE {} SET description=? WHERE name=?'.format(user_name)
@@ -129,7 +129,7 @@ def update_task(conn, task_name, task_description, user_name):
 
 
 @connect
-def delete_task(conn, task_name, user_name):
+def delete_one(conn, task_name, user_name):
     user_name = scrub(user_name)
     sql_check_command = 'SELECT EXISTS(SELECT 1 FROM {} WHERE name=? LIMIT 1'.format(user_name)
     user_name = scrub(user_name)

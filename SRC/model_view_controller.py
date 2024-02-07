@@ -37,7 +37,7 @@ class View(object):
         """Method clears tasks then writes the new updated tasks to window. Can be optimized."""
         obj.delete(1.0, END)
         for key, num, task in list_of_tasks:
-            obj.insert('end -1 chars', "task name: '{}' task description {}\n".format(num, task))
+            obj.insert('end -1 chars', "[{}]: '{}'\n".format(num, task))
 
 
 class Controller(object):

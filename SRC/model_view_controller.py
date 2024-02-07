@@ -33,11 +33,11 @@ class Model(object):
 
 class View(object):
 
-    def update_tasks_window(self, obj, list_of_tasks):
+    def update_tasks_window(self, task_list_widget, list_of_tasks):
         """Method clears tasks then writes the new updated tasks to window. Can be optimized."""
-        obj.delete(1.0, END)
+        task_list_widget.delete(1.0, END)
         for key, num, task in list_of_tasks:
-            obj.insert('end -1 chars', "[{}]: '{}'\n".format(num, task))
+            task_list_widget.insert('end -1 chars', "[{}]: '{}'\n".format(num, task))
 
 
 class Controller(object):

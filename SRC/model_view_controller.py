@@ -177,10 +177,7 @@ class Controller(object):
     def update_task(self):
         if self.is_valid_task_name() and self.is_valid_task_description():
             self.model.delete_task(self.task_name_text_field.get())
-            self.model.create_task(self.task_name_text_field.get(), self.task_info_text_field.get())
-            self.view.update_tasks_window(self.task_info_text_area,
-                                          self.model.read_tasks())
-            self.clear_text_entries()
+            self.add_task()
 
     def delete_task(self):
         if self.is_valid_task_name():

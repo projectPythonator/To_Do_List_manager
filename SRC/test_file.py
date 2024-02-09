@@ -1,6 +1,4 @@
 import to_do_app_backend as backend_file
-import mvc_exceptions as mvc_exc
-import model_view_controller as mvc_file
 import unittest
 
 
@@ -53,7 +51,6 @@ class TestBackEnd(unittest.TestCase):
             self.assertEqual(row_values[2], expected[i][1])
 
     def test_delete_one(self):
-        """Depends on insert one working"""
         db_name = 'agis.db'
         table_name = "test_delete_one_table"
         expected = [("test task 1", "content here 1"), ("test task 2", "content here 2")]
@@ -71,6 +68,7 @@ class TestBackEnd(unittest.TestCase):
         backend_file.delete_one(conn, "test task 2", table_name)
         test_contents = backend_file.select_all(conn, table_name)
         self.assertEqual(len(test_contents), len(expected)-2)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -25,15 +25,34 @@ class TestBackEnd(unittest.TestCase):
         expected = [("test task 1", "content here 1"), ("test task 2", "content here 2")]
         backend_file.connect_to_db(db_name)
         conn = backend_file.connect_to_db(db_name)
-        conn.execute("DROP TABLE IF EXISTS {}".format(table_name))
+        backend_file.drop_table(conn, table_name)
         backend_file.create_table(conn, table_name)
         for key, value in expected:
             backend_file.insert_one(conn, key, value, table_name)
-        test_contents = backend_file.select_all(conn, "test_select_all_table")
+        test_contents = backend_file.select_all(conn, table_name)
+
+        self.assertEqual(len(test_contents), len(expected))
         for i, row_values in enumerate(test_contents):
             self.assertEqual(row_values[1], expected[i][0])
             self.assertEqual(row_values[2], expected[i][1])
 
+    def test_insert_one(self):
+        """Depends on insert one working"""
+        db_name = 'agis.db'
+        table_name = "test_insert_one_table"
+        expected = [("test name 1", "content here 1")]
+        backend_file.connect_to_db(db_name)
+        conn = backend_file.connect_to_db(db_name)
+        backend_file.drop_table(conn, table_name)
+        backend_file.create_table(conn, table_name)
+        for key, value in expected:
+            backend_file.insert_one(conn, key, value, table_name)
+        test_contents = backend_file.select_all(conn, table_name)
+
+        self.assertEqual(len(test_contents), len(expected))
+        for i, row_values in enumerate(test_contents):
+            self.assertEqual(row_values[1], expected[i][0])
+            self.assertEqual(row_values[2], expected[i][1])
 
 
 if __name__ == "__main__":

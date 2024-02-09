@@ -41,6 +41,16 @@ def disconnect_from_db(db=None, conn=None):
     if conn is not None:
         conn.close()
 
+@connect
+def drop_table(conn, table_name: str):
+    """Create a user profile in the form of a table."""
+    table_name = scrub(table_name)
+    sql = "DROP TABLE IF EXISTS {}".format(table_name)
+    try:
+        conn.execute(sql)
+    except OperationalError as e:
+        print(e)
+
 
 @connect
 def create_table(conn, table_name: str):

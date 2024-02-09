@@ -59,7 +59,7 @@ def create_table(conn, table_name: str):
     table_name = scrub(table_name)
     sql = ('CREATE TABLE {} (rowid INTEGER PRIMARY KEY AUTOINCREMENT, '
            'name TEXT UNIQUE, '
-           'description TEXT UNIQUE)').format(table_name)
+           'description TEXT)').format(table_name)
     try:
         conn.execute(sql)
     except OperationalError as e:

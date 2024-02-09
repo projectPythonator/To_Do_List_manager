@@ -3,7 +3,7 @@ import unittest
 
 
 """Known bugs to fix
-Technically right now the backend is fully connected to the front end exception wise
+Technically right now the backend isn't fully connected to the front end exception wise
 need to bridge this gap via model and controller
 Example would be you can add a new user that already exists so it just loads the user instead
 SHOULD DO IS FOLLOWING: put up text box notifying user already exists explicitly

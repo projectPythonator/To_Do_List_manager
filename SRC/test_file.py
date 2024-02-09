@@ -2,6 +2,19 @@ import to_do_app_backend as backend_file
 import unittest
 
 
+"""Known bugs to fix
+Technically right now the backend is fully connected to the front end exception wise
+need to bridge this gap via model and controller
+Example would be you can add a new user that already exists so it just loads the user instead
+SHOULD DO IS FOLLOWING: put up text box notifying user already exists explicitly
+Fix would be checking for exceptions during is_valid_input functions
+
+When we update instead of using a DB update command we just delete then create.
+it's the same operation but we should sometime put in fix that uses the proper command
+Fix would be just add an update function to the back end 
+"""
+
+
 class TestBackEnd(unittest.TestCase):
     def test_scrub(self):
         test_str = 'QWERTY123456!@#$%{}{}{}'

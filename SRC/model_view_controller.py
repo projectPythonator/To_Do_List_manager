@@ -157,8 +157,7 @@ class Controller(object):
             self.model.add_new_user(self.user_name_text_field.get())
             self.view.update_user_name_window(self.gui,
                                               self.user_name_text_field.get())
-            self.view.update_tasks_window(self.task_info_text_area, self.model.read_tasks())
-            self.clear_text_entries()
+            self.update_window_and_text_clear()
 
     def add_user(self):
         if self.is_valid_user_name():
@@ -167,12 +166,14 @@ class Controller(object):
     def delete_user(self):
         pass
 
+    def update_window_and_text_clear(self):
+        self.view.update_tasks_window(self.task_info_text_area, self.model.read_tasks())
+        self.clear_text_entries()
+
     def add_task(self):
         if self.is_valid_task_name() and self.is_valid_task_description():
             self.model.create_task(self.task_name_text_field.get(), self.task_info_text_field.get())
-            self.view.update_tasks_window(self.task_info_text_area,
-                                          self.model.read_tasks())
-            self.clear_text_entries()
+            self.update_window_and_text_clear()
 
     def update_task(self):
         if self.is_valid_task_name() and self.is_valid_task_description():
@@ -182,8 +183,7 @@ class Controller(object):
     def delete_task(self):
         if self.is_valid_task_name():
             self.model.delete_task(self.task_name_text_field.get())
-            self.view.update_tasks_window(self.task_info_text_area, self.model.read_tasks())
-            self.clear_text_entries()
+            self.update_window_and_text_clear()
 
 
 if __name__ == '__main__':

@@ -18,6 +18,23 @@ class TestBackEnd(unittest.TestCase):
         backend_file.connect_to_db('agis')
         self.assertEqual(backend_file.DB_name, expected_named)
 
+    def test_select_all(self):
+        """Depends on insert one working"""
+        db_name = 'agis.db'
+        table_name = "test_select_all_table"
+        expected = [("test task 1", "content here 1"), ("test task 2", "content here 2")]
+        backend_file.connect_to_db(db_name)
+        conn = backend_file.connect_to_db(db_name)
+        conn.execute("DROP TABLE IF EXISTS {}".format(table_name))
+        backend_file.create_table(conn, table_name)
+        for key, value in expected:
+            backend_file.insert_one(conn, key, value, table_name)
+        test_contents = backend_file.select_all(conn, "test_select_all_table")
+        for i, row_values in enumerate(test_contents):
+            self.assertEqual(row_values[1], expected[i][0])
+            self.assertEqual(row_values[2], expected[i][1])
+
+
 
 if __name__ == "__main__":
     unittest.main()

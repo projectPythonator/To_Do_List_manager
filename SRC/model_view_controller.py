@@ -161,7 +161,7 @@ class Controller(object):
 
     def add_user(self):
         if self.is_valid_user_name():
-            self.load_user()  # TODO need to change this to be different than load user
+            self.load_user()
 
     def delete_user(self):
         pass

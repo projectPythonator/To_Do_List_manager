@@ -1,4 +1,4 @@
-from sqlite3 import OperationalError, IntegrityError, ProgrammingError
+from sqlite3 import OperationalError, IntegrityError, ProgrammingError, Connection
 import sqlite3
 import mvc_exceptions as mvc_exc
 
@@ -11,7 +11,7 @@ def scrub(input_string: str) -> str:
     return ''.join(k for k in input_string if k.isalnum())
 
 
-def connect_to_db(new_data_base=None):
+def connect_to_db(new_data_base=None) -> Connection:
     """Connect to a db. creates db if there isn't one yet."""
     global DB_name
     if new_data_base is None:
@@ -20,7 +20,7 @@ def connect_to_db(new_data_base=None):
     else:
         DB_name = '{}.db'.format(new_data_base)
         print("connected to {} data base.".format(new_data_base))
-    connection = sqlite3.connect(DB_name)
+    connection: Connection = sqlite3.connect(DB_name)
     return connection
 
 
@@ -40,6 +40,7 @@ def disconnect_from_db(db=None, conn=None):
         print("You are trying to disconnect from a wrong DB")
     if conn is not None:
         conn.close()
+
 
 @connect
 def drop_table(conn, table_name: str):

@@ -55,6 +55,7 @@ class View(object):
 
 class Controller(object):
     def __init__(self, mod: Model, viw: View):
+        # TODO clean up this __init__ function and make things a bit more organized
         self.model: Model = mod
         self.view: View = viw
         user_name_prompt_string = 'enter user name here'
@@ -117,17 +118,21 @@ class Controller(object):
         self.gui.mainloop()
 
     def clear_text_entries(self):
+        """Clears all text field of the application."""
         self.user_name_text_field.delete(0, END)
         self.task_info_text_field.delete(0, END)
         self.task_name_text_field.delete(0, END)
 
     def check_user_name_field(self) -> bool:
+        """Front end empty string check."""
         return self.user_name_text_field.get() == ''
 
     def check_task_name_field(self) -> bool:
+        """Front end empty string check."""
         return self.task_name_text_field.get() == ''
 
     def check_task_info_field(self) -> bool:
+        """Front end empty string check."""
         return self.task_info_text_field.get() == ''
 
     def is_valid_user_name(self) -> bool:
@@ -139,6 +144,7 @@ class Controller(object):
         return True
 
     def is_valid_task_name(self) -> bool:
+        """Checks on validity of a task name entered."""
         if self.check_task_name_field():
             messagebox.showerror("Invalid Task Name",
                                  message="Task name must not be blank.")
@@ -146,6 +152,7 @@ class Controller(object):
         return True
 
     def is_valid_task_description(self) -> bool:
+        """Checks on validity of a task description entered."""
         if self.check_task_info_field():
             messagebox.showerror("Invalid Task Description",
                                  message="Task name must not be blank.")
